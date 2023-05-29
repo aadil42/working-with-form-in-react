@@ -21,6 +21,7 @@ const SimpleInput = (props) => {
   
   const blurHandler = () => {
     setIsInputTouched(true);
+    setIsButtonTouched(true);
   }
 
   const submitHandler = (event) => {
