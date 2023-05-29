@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useMemo, useCallback} from 'react';
 import SimpleInput2 from './SimpleInput2';
 
 // import custom hooks
@@ -9,12 +9,10 @@ const BasicForm = (props) => {
 
   const [isSubmitTouched, setIsSubmitTouched] = useState(false);
 
-
   // for name input
   const validateName = (name) => {
     return name.trim() !== '';
   }
-
   const {
     setInput: setNameInput,
     input: nameInput,
@@ -24,12 +22,39 @@ const BasicForm = (props) => {
     inputClass: nameClass
   } = useInput(validateName);
 
-  const nameBlur = (e) => {
+  const nameBlur = () => {
     setNameIsTouched(true);
     setIsSubmitTouched(true);
   }
   const nameChange = (e) => {
     setNameInput(e.target.value);
+  }
+
+  // for email
+  const emailRegex = useMemo(() => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/;   
+  },[]);
+
+  const validateEmailInput = useCallback((email) => {
+    return emailRegex.test(email);
+  }, [emailRegex]);
+
+  const {
+    setInput: setEmailInput,
+    input: emailInput,
+    isInputValid: emailValid,
+    setIsTouched: setIsEmailTouched,
+    inputError: emailError,
+    inputClass: emailClass
+  } = useInput(validateEmailInput);
+
+  const emailChange = (e) => {
+    setEmailInput(e.target.value);
+  }
+
+  const emailBlur = () => {
+    setIsSubmitTouched(true);
+    setIsEmailTouched(true);
   }
 
   const submitHandler = (e) => {
@@ -39,7 +64,7 @@ const BasicForm = (props) => {
   }
 
   let formisValid = false;
-  if(nameValid) {
+  if(nameValid && emailValid) {
     formisValid = true;
   }
 
@@ -61,13 +86,19 @@ const BasicForm = (props) => {
       </div>
 
       <div className='form-control'>
-      {/* <SimpleInput2 
-        label="Address"
-        inputIsfor="address"
-        type="text"
-        id="address"
-        /> */}
+      <SimpleInput2 
+        label="Email"
+        inputIsfor="email"
+        type="email"
+        id="email"
+        inputClass={emailClass}
+        blur={emailBlur}
+        change={emailChange}
+        val={emailInput}
+        error={emailError}
+        />
       </div>
+      
 
       <div className='form-actions'>
         <button disabled={isSubmitTouched && !formisValid}>Submit</button>
