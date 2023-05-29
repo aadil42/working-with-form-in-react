@@ -1,12 +1,20 @@
 import {useState} from "react";
 
 const SimpleInput = (props) => {
+
+  // for name/text
   const [enteredValue, setEnteredValue] = useState('');
   const [isInputTouched, setIsInputTouched] = useState(false);
   const [isButtonTouched, setIsButtonTouched] = useState(false);
 
   const enteredNameIsValid = enteredValue.trim() !== ''; 
   const isInvalid = (!enteredNameIsValid && isInputTouched) ? true : false;
+
+  // for email
+  const [enteredEmail, setEnteredEmail] = useState('');
+
+
+  // cheking overall form.
   const formClass = (isInvalid) ? 'form-control invalid' : 'form-control';
 
   let isFormValid = false;
@@ -15,8 +23,16 @@ const SimpleInput = (props) => {
     isFormValid = true;
   }
 
+
+  // state handlers.
   const changeHandler = (e) => {
-    setEnteredValue(e.target.value);
+
+    if(e.target.id === 'email') {
+      setEnteredEmail(e.target.value);
+    }
+    if(e.target.id === 'name') {
+      setEnteredValue(e.target.value);
+    }
   }
   
   const blurHandler = () => {
@@ -40,8 +56,23 @@ const SimpleInput = (props) => {
     <form onSubmit={submitHandler}>
       <div className={formClass}>
         <label htmlFor='name'>Your Name</label>
-        <input onBlur={blurHandler} onChange={changeHandler} value={enteredValue} type='text' id='name' />
+        <input 
+        onBlur={blurHandler} 
+        onChange={changeHandler} 
+        value={enteredValue} 
+        type='text' 
+        id='name' />
         {isInvalid && <p className="error-text">input field must not be empty!</p>}
+      </div>
+      <div className={formClass}>
+        <label htmlFor='email'>Your Email</label>
+        <input 
+        // onBlur={blurHandler} 
+        onChange={changeHandler} 
+        value={enteredEmail} 
+        type='email' 
+        id='email' />
+        {/* {isInvalid && <p className="error-text">Enter a valid Email.</p>} */}
       </div>
       <div className="form-actions">
         <button disabled={!isFormValid && isButtonTouched}>Submit</button>
