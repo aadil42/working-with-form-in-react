@@ -9,10 +9,11 @@ const BasicForm = (props) => {
 
   const [isSubmitTouched, setIsSubmitTouched] = useState(false);
 
-  // for name input
-  const validateName = (name) => {
+  const validateText = (name) => {
     return name.trim() !== '';
   }
+  
+  // for name input
   const {
     setInput: setNameInput,
     input: nameInput,
@@ -20,7 +21,7 @@ const BasicForm = (props) => {
     setIsTouched: setNameIsTouched,
     inputError: nameError,
     inputClass: nameClass
-  } = useInput(validateName);
+  } = useInput(validateText);
 
   const nameBlur = () => {
     setNameIsTouched(true);
@@ -57,14 +58,35 @@ const BasicForm = (props) => {
     setIsEmailTouched(true);
   }
 
+  // for address
+  const {
+    setInput: setAddress,
+    input: addresVal,
+    isInputValid: addressValid,
+    setIsTouched: setIsAddressTouched,
+    inputError: addressError,
+    inputClass: addressClass
+  } = useInput(validateText);
+
+  const addressBlur = () => {
+    setIsSubmitTouched(true);
+    setIsAddressTouched(true);
+  } 
+
+  const addressChange = (e) => {
+    setAddress(e.target.value);
+  }
+
   const submitHandler = (e) => {
     e.preventDefault();
     setIsSubmitTouched(true);
     setNameIsTouched(true);
+    setIsEmailTouched(true);
+    setIsAddressTouched(true);
   }
 
   let formisValid = false;
-  if(nameValid && emailValid) {
+  if(nameValid && emailValid && addressValid) {
     formisValid = true;
   }
 
@@ -99,6 +121,19 @@ const BasicForm = (props) => {
         />
       </div>
       
+      <div className='form-control'>
+      <SimpleInput2 
+        label="Address"
+        inputIsfor="address"
+        type="address"
+        id="address"
+        inputClass={addressClass}
+        blur={addressBlur}
+        change={addressChange}
+        val={addresVal}
+        error={addressError}
+        />
+      </div>
 
       <div className='form-actions'>
         <button disabled={isSubmitTouched && !formisValid}>Submit</button>
