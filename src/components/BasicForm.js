@@ -1,20 +1,24 @@
+
+import SimpleInput2 from './SimpleInput2';
+
 const BasicForm = (props) => {
   return (
     <form>
+
       <div className='control-group'>
-        <div className='form-control'>
-          <label htmlFor='name'>First Name</label>
-          <input type='text' id='name' />
-        </div>
-        <div className='form-control'>
-          <label htmlFor='name'>Last Name</label>
-          <input type='text' id='name' />
-        </div>
+        <SimpleInput2 
+        label="Name"
+        inputIsfor="fdds"
+        type="text"
+        id="name"
+        />
+        <SimpleInput2 />
       </div>
+
       <div className='form-control'>
-        <label htmlFor='name'>E-Mail Address</label>
-        <input type='text' id='name' />
+        <SimpleInput2 />
       </div>
+
       <div className='form-actions'>
         <button>Submit</button>
       </div>
